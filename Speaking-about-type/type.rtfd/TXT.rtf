@@ -1,0 +1,753 @@
+{\rtf1\ansi\ansicpg932\cocoartf2761
+\cocoatextscaling0\cocoaplatform0{\fonttbl\f0\fswiss\fcharset0 Helvetica-Bold;\f1\fswiss\fcharset0 Helvetica;\f2\fswiss\fcharset0 Helvetica-Oblique;
+}
+{\colortbl;\red255\green255\blue255;}
+{\*\expandedcolortbl;;}
+\paperw11900\paperh16840\margl1440\margr1440\vieww22120\viewh16400\viewkind0
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f0\b\fs28 \cf0 Talking About Types
+\f1\b0\fs24 \
+\
+\'97\'97\'97\'97\'97\'97\'97\
+f
+\fs26 unction squareOf(n) \{\
+  return n * n\
+\}\
+squareOf(2)     // evaluates to 4\
+squareOf('z')   // evaluates to NaN\
+\'97\'97\'97\'97\'97\'97\'97\
+
+\fs24 \
+This function work for numbers, If you pass string to it ,the result will be invalid. \
+\
+\'97\'97\'97\'97\'97\'97\'97\
+function squareOf(n: number) \{\
+  return n * n\
+\}\
+squareOf(2)     // evaluates to 4\
+squareOf('z')   // Error TS2345: Argument of type '"z"' is not assignable to\
+                // parameter of type 'number'.\
+\'97\'97\'97\'97\'97\'97\'97\
+\
+Give type of Number to Args, Now TS complain right away, if you give not a number \
+\
+Without a type annotation, 
+\f0\b squareOf
+\f1\b0  is unconstrained in its parameter, and you can pass any type of argument to it. \
+Once we constrain it, TypeScript goes to work for us verifying that every place we call our function, \
+we call it with a compatible argument. In this example the type of 
+\f0\b 2
+\f1\b0  is 
+\f0\b number, 
+\f1\b0 \
+which is assignable to 
+\f0\b squareOf\'92
+\f1\b0 s annotation 
+\f0\b number
+\f1\b0 , so TypeScript accepts our code; \
+but 
+\f0\b 'z
+\f1\b0 ' is a 
+\f0\b string
+\f1\b0 , which is not assignable to 
+\f0\b number
+\f1\b0 , so TypeScript complains.\
+\
+
+\fs28 The ABCs of Types\
+\
+any\
+\
+
+\f0\b\fs24 any
+\f1\b0  is The Godfather. \
+It shows as default, when the TS not known what type is.\
+This is a last resort type and Should avoid this when possible.\
+\
+
+\f0\b *ESlint usually not allow to use any as type for type safe.
+\f1\b0 \
+\
+
+\fs28 \'97\'97\'97\'97\'97\'97\'97\'97\
+\
+unknown\
+\
+
+\f0\b\fs24 unknown 
+\f1\b0 can be good and bad on both side.\
+If you have really no idea what type ahead, just use 
+\f0\b unknown
+\f1\b0  instead of 
+\f0\b any
+\f1\b0 .\
+
+\fs28 \
+
+\fs24 TypeScript won\'92t let you use an unknown type until you refine it by checking what it is
+\fs28 \
+\
+
+\f2\i let a: unknown = 30         // unknown\
+let b = a === 123           // boolean\
+let c = a + 10              // Error TS2571: Object is of type 'unknown'.\
+if (typeof a === 'number') \{\
+  let d = a + 10            // number\
+\}
+\f1\i0 \
+\
+
+\fs24 You can use unknown to limit the type\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+
+\fs28 boolean\
+\
+
+\f2\i let a = true                // boolean\
+var b = false               // boolean\
+const c = true              // true\
+let d: boolean = true       // boolean\
+let e: true = true          // true\
+let f: true = false         // Error TS2322: Type 'false' is not assignable\
+                            // to type 'true'.
+\f1\i0 \
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+number\
+\
+number is the set of all numbers: integers, floats, positives, negatives, Infinity, NaN, and so on. 
+\fs24 \
+\
+
+\f2\i\fs28 let a = 1234                // number\
+var b = Infinity * 0.10     // number\
+const c = 5678              // 5678\
+let d = a < b               // boolean\
+let e: number = 100         // number\
+let f: 26.218 = 26.218      // 26.218\
+let g: 26.218 = 10          // Error TS2322: Type '10' is not assignable\
+                            // to type '26.218'.
+\f1\i0 \
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+bigint\
+\
+
+\fs24 bigint lets you work with large integers without running into rounding errors.\
+\
+
+\f2\i\fs28 let a = 1234n               // bigint\
+const b = 5678n             // 5678n\
+var c = a + b               // bigint\
+let d = a < 1235            // boolean\
+let e = 88.5n               // Error TS1353: A bigint literal must be an integer.\
+let f: bigint = 100n        // bigint\
+let g: 100n = 100n          // 100n\
+let h: bigint = 100         // Error TS2322: Type '100' is not assignable\
+                            // to type 'bigint'.
+\f1\i0 \
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+string\
+\
+
+\f2\i blet a = 'hello'             // string\
+var b = 'billy'             // string\
+const c = '!'               // '!'\
+let d = a + ' ' + b + c     // string\
+let e: string = 'zoom'      // string\
+let f: 'john' = 'john'      // 'john'\
+let g: 'john' = 'zoe'       // Error TS2322: Type "zoe" is not assignable\
+                            // to type "john".
+\f1\i0 \
+\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+symbol\
+\
+are used as an alternative to string keys in objects and maps, \
+in places where you want to be extra sure that people are using the right well-known key \
+and didn\'92t accidentally set the key\'97think setting a default iterator for your object\
+ (Symbol.iterator), or overriding at runtime whether or not your object\
+ is an instance of something (Symbol.hasInstance).\
+\
+
+\f2\i \
+let a = Symbol('a')         // symbol\
+let b: symbol = Symbol('b') // symbol\
+var c = a === b             // boolean\
+let d = a + 'x'             // Error TS2469: The '+' operator cannot be applied\
+                            // to type 'symbol'.
+\f1\i0 \
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+Objects\
+\
+	
+\f2\i let a = \{\
+	  b: 'x'\
+	\}            // \{b: string\}\
+	a.b          // string\
+\
+	let b = \{\
+	  c: \{\
+ 	   d: 'f'\
+	  \}\
+	\}            // \{c: \{d: string\}\}
+\f1\i0 \
+\
+You can specify the type nested like this \
+
+\f2\i \
+	let a: \{b: number\} = \{\
+ 	 	b:12\
+	\}            // \{b: number\}\
+
+\f1\i0 \
+\
+Can be set default after object type define and use constructor to create new value \
+\
+
+\f2\i let c: \{\
+  firstName: string\
+  lastName: string\
+\} = \{\
+  firstName: 'john',\
+  lastName: 'barrowman'\
+\}\
+\
+class Person \{\
+  constructor(\
+    public firstName: string,   // public is shorthand for\
+                                // this.firstName = firstName\
+    public lastName: string\
+  ) \{\}\
+\}\
+c = new Person('matt', 'smith') // OK
+\f1\i0 \
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+Optional (?) isn\'92t the only modifier you can use when declaring object types.\
+\
+You can also mark fields as read-only\
+\
+
+\f2\i \
+let user: \{\
+  readonly firstName: string\
+\} = \{\
+  firstName: 'abby'\
+\}\
+\
+user.firstName // string\
+user.firstName =\
+  'abbey with an e' // Error TS2540: Cannot assign to 'firstName' because it\
+                    // is a read-only property.
+\f1\i0 \
+\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+Type aliases\
+\
+
+\f2\i type Age = number\
+\
+type Person = \{\
+  name: string\
+  age: Age\
+\}
+\f1\i0 \
+\
+Age is but a number\
+\
+Type can not be duplicate\
+\
+
+\f2\i type Color = 'red'\
+type Color = 'blue'
+\f1\i0 \
+\
+But if you not use in same judgment, you can pull value \
+\
+
+\f2\i type Color = 'red'\
+\
+let x = Math.random() < .5\
+\
+if (x) \{\
+  type Color = 'blue'  // This shadows the Color declared above.\
+  let b: Color = 'blue'\
+\} else \{\
+  let c: Color = 'red'\
+\}
+\f1\i0 \
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+Union and intersection types\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs24 \cf0 {{\NeXTGraphic prts_0302.png \width3408 \height1166 \appleattachmentpadding0 \appleembedtype0 \appleaqc
+}�}
+\fs28 \
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\f2\i \cf0 type Cat = \{name: string, purrs: boolean\}\
+type Dog = \{name: string, barks: boolean, wags: boolean\}\
+type CatOrDogOrBoth = Cat | Dog ; union\
+type CatAndDog = Cat & Dog ;intersection\
+\
+
+\f1\i0 Union\
+\
+l
+\f2\i et a: CatOrDogOrBoth = \{\
+  name: 'Bonkers',\
+  purrs: true\
+\}\
+\
+// Dog\
+a = \{\
+  name: 'Domino',\
+  barks: true,\
+  wags: true\
+\}\
+\
+// Both\
+a = \{\
+  name: 'Donkers',\
+  barks: true,\
+  purrs: true,\
+  wags: true\
+\} 
+\f1\i0 \
+\
+intersection \
+\
+
+\f2\i let b: CatAndDog = \{\
+  name: 'Domino',\
+  barks: true,\
+  purrs: true,\
+  wags: true\
+\}\
+
+\f1\i0 \
+\
+If the return value could be 2 different type use Union \
+\
+
+\f2\i function trueOrNull(isTrue: boolean) \{\
+  if (isTrue) \{\
+    return 'true'\
+  \}\
+  return null\
+\}
+\f1\i0 \
+\
+\
+type Returns = string | null\
+\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+Arrays\
+\
+\
+
+\f2\i let a = [1, 2, 3]           // number[]\
+var b = ['a', 'b']          // string[]\
+let c: string[] = ['a']     // string[]\
+let d = [1, 'a']            // (string | number)[]\
+const e = [2, 'b']          // (string | number)[]\
+\
+let f = ['red']\
+f.push('blue')\
+f.push(true)                // Error TS2345: Argument of type 'true' is not\
+                            // assignable to parameter of type 'string'.\
+\
+let g = []                  // any[]\
+g.push(1)                   // number[]\
+g.push('red')               // (string | number)[]\
+\
+let h: number[] = []        // number[]\
+h.push(1)                   // number[]\
+h.push('red')               // Error TS2345: Argument of type '"red"' is not\
+                            // assignable to parameter of type 'number'.
+\f1\i0 \
+\
+You can put multiple Items into array but you must constant only one type in the array.\
+\
+\
+
+\f2\i let d = [1, 'a']\
+\
+d.map(_ => \{\
+  if (typeof _ === 'number') \{\
+    return _ * 3\
+  \}\
+  return _.toUpperCase()\
+\})
+\f1\i0 \
+\
+If you Use typeOf , you can check array\'92s value each times\
+\
+\
+
+\f2\i function buildArray() \{\
+  let a = []                // any[]\
+  a.push(1)                 // number[]\
+  a.push('x')               // (string | number)[]\
+  return a\
+\}\
+\
+let myArray = buildArray()  // (string | number)[]\
+myArray.push(true)          // Error 2345: Argument of type 'true' is not\
+                            // assignable to parameter of type 'string | number'.
+\f1\i0 \
+\
+\
+Add more then 2 value will complains\
+\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+Tuples\
+\
+Tuples are subtypes of array\
+They\'92re a special way to type arrays that have fixed lengths,\
+\
+ Unlike most other types, tuples have to be explicitly typed when you declare them\
+\
+
+\f2\i let a: [number] = [1]\
+\
+// A tuple of [first name, last name, birth year]\
+let b: [string, string, number] = ['malcolm', 'gladwell', 1963]\
+\
+b = ['queen', 'elizabeth', 'ii', 1926]  // Error TS2322: Type 'string' is not\
+                                        // assignable to type 'number'.
+\f1\i0 \
+\
+Tuples support optional elements too. Just like in object types, ? means \'93optional\'94:\
+\
+/
+\f2\i / An array of train fares, which sometimes vary depending on direction\
+let trainFares: [number, number?][] = [\
+  [3.75],\
+  [8.25, 7.70],\
+  [10.50]\
+]\
+\
+// Equivalently:\
+let moreTrainFares: ([number] | [number, number])[] = [\
+  // ...\
+]
+\f1\i0 \
+\
+Tuples also support rest elements, which you can use to type tuples with minimum lengths:\
+\
+// A list of strings with at least 1 element\
+let friends: [string, ...string[]] = ['Sara', 'Tali', 'Chloe', 'Claire']\
+\
+// A heterogeneous list\
+let list: [number, boolean, ...string[]] = [1, false, 'a', 'b', 'c']\
+\
+Not only do tuple types safely encode heterogeneous lists, but they also capture the length of the list they type. \
+These features buy you significantly more safety than plain old arrays\'97use them often.\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+
+\f0\b Read-only arrays and tuples
+\f1\b0 \
+\
+TypeScript comes with a readonly array type out of the box, which you can use to create immutable arrays. \
+\
+ Read-only arrays are just like regular arrays, but you can\'92t update them in place. \
+\
+Available to use nonmutating methods 
+\f0\b .concat
+\f1\b0  and 
+\f0\b .slice
+\f1\b0  instead of mutating ones like 
+\f0\b .push
+\f1\b0  and 
+\f0\b .splice
+\f1\b0 \
+\
+\
+
+\f2\i let as: readonly number[] = [1, 2, 3]     // readonly number[]\
+let bs: readonly number[] = as.concat(4)  // readonly number[]\
+let three = bs[2]                         // number\
+as[4] = 5            // Error TS2542: Index signature in type\
+                     // 'readonly number[]' only permits reading.\
+as.push(6)           // Error TS2339: Property 'push' does not\
+                     // exist on type 'readonly number[]'.\
+
+\f1\i0 \
+\
+Like Array, TypeScript comes with a couple of longer-form ways to declare read-only arrays and tuples:\
+\
+
+\f2\i \
+type A = readonly string[]           // readonly string[]\
+type B = ReadonlyArray<string>       // readonly string[]\
+type C = Readonly<string[]>          // readonly string[]\
+\
+type D = readonly [number, string]   // readonly [number, string]\
+type E = Readonly<[number, string]>  // readonly [number, string]\
+
+\f1\i0 \
+\
+You can use any type above \
+\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+
+\f0\b null, undefined, void, and never
+\f1\b0 \
+\
+There are 2 values that you can say \'93nothing\'94 in the value \
+\
+One is null, one is undefined\
+\
+They\'92re both special types, because in TypeScript the only thing of type undefined is the value undefined,\
+ and the only thing of type null is the value null.\
+\
+
+\f0\b undefines
+\f1\b0  : something hasn\'92t been defined yet\
+\
+
+\f0\b null 
+\f1\b0 : an absence of a value (like if you tried to compute a value, but ran into an error along the way)\
+\
+
+\f0\b Void
+\f1\b0  and 
+\f0\b never
+\f1\b0  are specific\
+\
+
+\f0\b Void
+\f1\b0  : Obviously not return value (like console.log)\
+\
+
+\f0\b Never
+\f1\b0  : Function that never return any value (function that throw error or recursive)\
+\
+// (a) A function that returns a number or null\
+function a(x:number) \{\
+  if (x < 10) \{\
+    return x\
+  \}\
+  return null\
+\}\
+\
+// (b) A function that returns undefined\
+function b() \{\
+  return undefined\
+\}\
+\
+// (c) A function that returns void\
+function c() \{\
+  let a = 2 + 2\
+  let b = a * a\
+\}\
+\
+// (d) A function that returns never\
+function d() \{\
+  throw TypeError('I always error')\
+\}\
+\
+// (e) Another function that returns never\
+function e() \{\
+  while (true) \{\
+    doSomething()\
+  \}\
+\}\
+\
+\
+\
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs24 \cf0 {{\NeXTGraphic スクリーンショット 2024-08-01 14.34.41.png \width10480 \height5900 \appleattachmentpadding0 \appleembedtype0 \appleaqc
+}�}\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+
+\fs28 \cf0 \
+\pard\tx566\tx1133\tx1700\tx2267\tx2834\tx3401\tx3968\tx4535\tx5102\tx5669\tx6236\tx6803\pardirnatural\partightenfactor0
+\cf0 \
+Enums\
+\
+They are unordered data structures that map keys to values.\
+\
+There are two kinds of enums: enums that map from strings to strings, \
+and enums that map from strings to numbers.\
+\
+\
+
+\f2\i enum Language \{\
+  English,\
+  Spanish,\
+  Russian\
+\}
+\f1\i0 \
+\
+\
+To retrieve a value from an enum, you access it with either dot or bracket notation\
+\
+
+\f2\i let myFirstLanguage = Language.Russian      // Language\
+let mySecondLanguage = Language['English']  // Language
+\f1\i0 \
+\
+\
+Enum can be however it\'92s better to practice to explicitly assign a value to each enum member:\
+\
+
+\f2\i enum Language \{\
+  English = 0,\
+  Spanish = 1\
+\}\
+\
+enum Language \{\
+  Russian = 2\
+\} 
+\f1\i0 \
+\
+\
+You can use computed values, and you don\'92t have to define all of them \
+(TypeScript will do its best to infer what\'92s missing):\
+\
+\
+
+\f2\i enum Language \{\
+  English = 100,\
+  Spanish = 200 + 300,\
+  Russian                 // TypeScript infers 501 (the next number after 500)\
+\}
+\f1\i0 \
+\
+\
+You can also use string values for enums, or even mix string and number values:\
+\
+
+\f2\i enum Color \{\
+  Red = '#c10000',\
+  Blue = '#007ac1',\
+  Pink = 0xc10050,        // A hexadecimal literal\
+  White = 255             // A decimal literal\
+\}\
+\
+let red = Color.Red       // Color\
+let pink = Color.Pink     // Color
+\f1\i0 \
+\
+\
+TypeScript lets you access enums both by value and by key for convenience, but this can get unsafe quickly:\
+\
+\
+
+\f2\i let a = Color.Red         // Color\
+let b = Color.Green       // Error TS2339: Property 'Green' does not exist\
+                          // on type 'typeof Color'.\
+let c = Color[0]          // string\
+let d = Color[6]          // string (!!!)
+\f1\i0 \
+\
+\
+You shouldn\'92t be able to get Color[6], but TypeScript doesn\'92t stop you! \
+We can ask TypeScript to prevent this kind of unsafe access by opting into a safer subset \
+of enum behavior with const enum instead. Let\'92s rewrite our Language enum from earlier:\
+\
+
+\f2\i const enum Language \{\
+  English,\
+  Spanish,\
+  Russian\
+\}\
+\
+// Accessing a valid enum key\
+let a = Language.English  // Language\
+\
+// Accessing an invalid enum key\
+let b = Language.Tagalog  // Error TS2339: Property 'Tagalog' does not exist\
+                          // on type 'typeof Language'.\
+\
+// Accessing a valid enum value\
+let c = Language[0]       // Error TS2476: A const enum member can only be\
+                          // accessed using a string literal.\
+\
+// Accessing an invalid enum value\
+let d = Language[6]       // Error TS2476: A const enum member can only be\
+                          // accessed using a string literal.
+\f1\i0 \
+\
+\
+A const enum doesn\'92t let you do reverse lookups, and so behaves a lot like a regular JavaScript object\
+\
+\'97\'97\'97\'97\'97\'97\'97\'97\
+\
+\
+const enum Flippable \{\
+  Burger,\
+  Chair,\
+  Cup,\
+  Skateboard,\
+  Table\
+\}\
+\
+function flip(f: Flippable) \{\
+  return 'flipped it'\
+\}\
+\
+flip(Flippable.Chair)     // 'flipped it'\
+flip(Flippable.Cup)       // 'flipped it'\
+flip(12)                  // 'flipped it' (!!!)\
+\
+This pattern Enum can be entered number as well\
+\
+Let\'92s see howe we use \
+\
+\
+
+\f2\i const enum Flippable \{\
+  Burger = 'Burger',\
+  Chair = 'Chair',\
+  Cup = 'Cup',\
+  Skateboard = 'Skateboard',\
+  Table = 'Table'\
+\}\
+\
+function flip(f: Flippable) \{\
+  return 'flipped it'\
+\}\
+\
+flip(Flippable.Chair)     // 'flipped it'\
+flip(Flippable.Cup)       // 'flipped it'\
+flip(12)                  // Error TS2345: Argument of type '12' is not\
+                          // assignable to parameter of type 'Flippable'.\
+flip('Hat')               // Error TS2345: Argument of type '"Hat"' is not\
+                          // assignable to parameter of type 'Flippable'.
+\f1\i0 \
+\
+\
+All it takes is one pesky numeric value in your enum to make the whole enum unsafe.\
+\
+\
+}
